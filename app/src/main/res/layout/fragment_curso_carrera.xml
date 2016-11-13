@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.itchihuahuaii.aplicacionsistemas.FragmentCursoCarrera">
+
+    <ImageView
+        android:id="@+id/imagen_cursos_por_carrera"
+        android:layout_width="322dp"
+        android:layout_height="170dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/carta"/>
+    <TextView
+        android:id="@+id/titulo_cursos_por_carrera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/titulo_lista_cursos_por_carrera" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reciclador"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

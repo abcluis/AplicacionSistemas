@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AplicacionSistemas</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titulo_tab_perfil">Mi moodle</string>
+    <string name="titulo_tab_mimod">Mi Mod</string>
+    <string name="titulo_tab_mistareas">Mis Tareas</string>
+    <string name="titulo_tab_miscursos">Mis cursos</string>
+    <string name="mi_mod_titulo_carrera">Titulo Carrera</string>
+    <string name="mis_tareas_titulo_curso">Titulo Curso</string>
+    <string name="mis_tareas_titulo_tarea">Titulo Tarea</string>
+    <string name="titulo_lista_cursos_por_carrera">Lista de cursos</string>
+    <string name="titulo_curso">Titulo Ilustrativo Curso</string>
+    <string name="titulo_profesor">Nombre Profesor Ilustrativo</string>
+</resources>
