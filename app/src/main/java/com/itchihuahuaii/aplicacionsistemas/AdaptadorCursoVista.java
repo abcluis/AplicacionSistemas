@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVista.ViewHolder> {
     private final Context contexto;
     private Cursor items;
+    public boolean ajeno=false;
 
     private OnItemClickListener escucha;
 
@@ -26,6 +27,7 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
         // Referencias UI
         public TextView tarea;
         public ImageView delete;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -41,7 +43,7 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
             });
             delete =(ImageView)v.findViewById(R.id.delete_tarea);
             MainActivity mainActivity = (MainActivity)contexto;
-            if(mainActivity.getTipo().equals("ALUMNO")){
+            if(mainActivity.getTipo().equals("ALUMNO")|| ajeno){
                 delete.setVisibility(View.GONE);
             }
 
@@ -71,8 +73,10 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
 
     public AdaptadorCursoVista(Context contexto) {
         this.contexto = contexto;
+    }
 
-
+    public void setAjeno(boolean ajeno){
+        this.ajeno=ajeno;
     }
 
     @Override

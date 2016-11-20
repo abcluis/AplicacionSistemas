@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -132,21 +135,36 @@ public class MainActivity extends AppCompatActivity {
         if(getTipo().equals("ALUMNO")){
             c=datos.selectPlataformaDBCursor("SELECT tarea.nombre, curso.nombre FROM tarea,curso,alumno_curso,alumno " +
                     "WHERE tarea.id_curso=curso.id AND alumno_curso.id_curso=curso.id AND alumno_curso.id_alumno=alumno.id AND alumno.id="+getId_alumno());
-            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                    getBaseContext())
-                    .setSmallIcon(R.drawable.notification)
-                    .setContentTitle("Tareas Pendientes")
-                    .setContentText("Tienes "+ c.getCount()+" tareas pendientes!!!")
-                    .setWhen(System.currentTimeMillis());
-            nManager.notify(12345, builder.build());
+            Notification.Builder builder = new Notification.Builder(getApplicationContext());
+            NotificationManager notifManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notifManager.notify(1,getInboxStyle(builder,c));
         }else{
             c =datos.selectPlataformaDBCursor("SELECT tarea.nombre, curso.nombre FROM tarea,curso,profesor WHERE " +
                     "tarea.id_curso=curso.id AND curso.id_profesor=profesor.id AND profesor.id="+getId_profesor());
         }
 
+    }
+    private Notification getInboxStyle(Notification.Builder builder,Cursor c) {
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.icon_tarea);
+                builder
+                .setContentTitle("Reduced Inbox title")
+                .setContentText("Reduced content")
+                .setContentInfo("Info")
+                .setSmallIcon(R.drawable.icon_tarea)
+                .setLargeIcon(bitmap);
+
+        Notification.InboxStyle n = new Notification.InboxStyle(builder)
+                .setBigContentTitle("Mis Tareas Pendientes");
+        c.moveToFirst();
+        do{
+            n.addLine(c.getString(0));
+        }
+        while(c.moveToNext());
 
 
+        return n.build();
     }
 
 

@@ -3,6 +3,7 @@ package com.itchihuahuaii.aplicacionsistemas;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,7 +100,17 @@ public class AdaptadorCursoCarrera extends RecyclerView.Adapter<AdaptadorCursoCa
 
         MainActivity principal = (MainActivity)contexto;
 
+
+
         String idCurso = principal.datos.selectPlataformaDB("SELECT id FROM curso WHERE nombre='"+items.getString(0)+"'");
+        String cursoAjeno="";
+        if(principal.getTipo().equals("PROFESOR")){
+            cursoAjeno = principal.datos.selectPlataformaDB("SELECT curso.id FROM curso,profesor,carrera WHERE curso.id_profesor=profesor.id AND carrera.nombre='"+principal.getCarrera()+"' AND " +
+                    "profesor.id="+principal.getId_profesor()+" AND curso.id="+idCurso);
+
+        }
+
+
         String dato = principal.datos.selectPlataformaDB("SELECT curso.nombre FROM curso,alumno_curso,alumno WHERE alumno_curso.id_curso="+idCurso+" AND alumno_curso.id_alumno="+principal.getId_alumno());
 
         if(!dato.equals("") || !principal.getTipo().equals("ALUMNO")){

@@ -38,7 +38,16 @@ public class FragmentCursoVista extends Fragment {
         reciclador.setLayoutManager(linearLayoutManager);
         adaptadorMisTareas = new AdaptadorCursoVista(getContext());
         MainActivity ma = (MainActivity)getActivity();
-        if(ma.getTipo().equals("ALUMNO")){
+        String cursoAjeno="";
+        if(ma.getTipo().equals("PROFESOR")){
+            cursoAjeno = ma.datos.selectPlataformaDB("SELECT curso.id FROM curso,profesor,carrera WHERE curso.id_profesor=profesor.id AND " +
+                    "profesor.id="+ma.getId_profesor()+" AND curso.id="+ma.getCurso());
+            if (cursoAjeno.equals("")) {
+                adaptadorMisTareas.setAjeno(true);
+            }
+
+        }
+        if(ma.getTipo().equals("ALUMNO") || cursoAjeno.equals("")){
             nueva_tarea.setVisibility(View.GONE);
         }
         nueva_tarea.setOnClickListener(new View.OnClickListener() {
