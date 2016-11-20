@@ -1,6 +1,7 @@
 package com.itchihuahuaii.aplicacionsistemas;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,14 @@ public class FragmentMisCursos extends Fragment {
         adaptador = new AdaptadorMisCursos(getContext());
         MainActivity ma = (MainActivity)getActivity();
         reciclador.setHasFixedSize(false);
-        adaptador.swapCursor(ma.datos.obtenerTabMisCursos(ma.USER));
+        Cursor c;
+        if(ma.getTipo().equals("ALUMNO")){
+            c = ma.datos.selectPlataformaDBCursor("SELECT curso.nombre, profesor.nombre FROM curso,profesor,alumno,alumno_curso" +
+                    " WHERE curso.id_profesor=profesor.id AND alumno_curso.id_curso=curso.id AND alumno_curso.id_alumno=alumno.id AND alumno.id="+ma.getId_alumno());
+        }else {
+            c = ma.datos.selectPlataformaDBCursor("SELECT curso.nombre,profesor.nombre FROM curso,profesor WHERE curso.id_profesor = profesor.id AND profesor.id="+ma.getId_profesor());
+        }
+        adaptador.swapCursor(c);
         reciclador.setAdapter(adaptador);
         return view;
     }

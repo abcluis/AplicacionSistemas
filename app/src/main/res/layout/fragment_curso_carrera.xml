@@ -10,7 +10,7 @@
         android:layout_width="322dp"
         android:layout_height="170dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/carta"/>
+        android:src="@drawable/carrera"/>
     <TextView
         android:id="@+id/titulo_cursos_por_carrera"
         android:layout_width="match_parent"

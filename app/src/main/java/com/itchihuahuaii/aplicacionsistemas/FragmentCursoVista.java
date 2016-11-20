@@ -1,9 +1,8 @@
 package com.itchihuahuaii.aplicacionsistemas;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 
 public class FragmentCursoVista extends Fragment {
     RecyclerView reciclador;
-    GridLayoutManager linearLayoutManager;
-    AdaptadorMisTareas adaptadorMisTareas;
+    LinearLayoutManager linearLayoutManager;
+    AdaptadorCursoVista adaptadorMisTareas;
     TextView titulo_curso;
+    FloatingActionButton nueva_tarea;
 
     public FragmentCursoVista() {
 
@@ -33,14 +32,26 @@ public class FragmentCursoVista extends Fragment {
 
         titulo_curso = (TextView)view.findViewById(R.id.curso_vista_nombre_curso);
         reciclador =(RecyclerView)view.findViewById(R.id.reciclador);
-        linearLayoutManager = new GridLayoutManager(getActivity(),2);
+        nueva_tarea = (FloatingActionButton)view.findViewById(R.id.fab);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayoutManager);
-        adaptadorMisTareas = new AdaptadorMisTareas(getContext());
+        adaptadorMisTareas = new AdaptadorCursoVista(getContext());
         MainActivity ma = (MainActivity)getActivity();
-        Cursor c = ma.datos.obtenerCursoDatos(ma.CURSO);
+        if(ma.getTipo().equals("ALUMNO")){
+            nueva_tarea.setVisibility(View.GONE);
+        }
+        nueva_tarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity principal = (MainActivity) getContext();
+                principal.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_principal,new FragmentNuevaTarea(),"nueva_tarea").addToBackStack(null).commit();
+            }
+        });
+        Cursor c = ma.datos.selectPlataformaDBCursor("SELECT tarea.nombre FROM tarea,curso WHERE tarea.id_curso=curso.id" +
+                " AND curso.id="+ma.getCurso());
         adaptadorMisTareas.swapCursor(c);
-        c.moveToFirst();
-        titulo_curso.setText(c.getString(0));
+        titulo_curso.setText(ma.datos.selectPlataformaDB("SELECT nombre FROM curso WHERE id="+ma.getCurso()));
         reciclador.setAdapter(adaptadorMisTareas);
         return view;
     }

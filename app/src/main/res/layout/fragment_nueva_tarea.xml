@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.itchihuahuaii.aplicacionsistemas.FragmentNuevaTarea">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/tarea"/>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/nueva_tarea_nombre"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:maxLines="1"
+            android:hint="Nombre de la tarea"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:datePickerMode="spinner"
+        android:id="@+id/datePicker" />
+    <Button
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:background="#455a64"
+        android:textColor="#fff"
+        android:text="Enviar"
+        android:layout_gravity="center"
+        android:id="@+id/nueva_tarea_button" />
+
+
+</LinearLayout>

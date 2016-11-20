@@ -41,25 +41,15 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
                     items.moveToPosition(getAdapterPosition());
                     MainActivity ap = (MainActivity) contexto;
                     Fragment cursocarrera = new FragmentCursoCarrera();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("dato",items.getString(1));
-                    cursocarrera.setArguments(bundle);
-                    ap.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_principal,cursocarrera).commit();
+                    ap.setCarrera(items.getString(0));
+                    ap.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_principal,cursocarrera,"curso_carrera").addToBackStack(null).commit();
                 }
             });
         }
 
     }
 
-    private String obtenerIdAlquiler(int posicion) {
-        if (items != null) {
-            if (items.moveToPosition(posicion)) {
-                return items.getString(ConsultaAlquileres.ID_ALQUILER);
-            }
-        }
 
-        return null;
-    }
 
     public AdaptadorMiMod(Context contexto) {
         this.contexto = contexto;
@@ -81,7 +71,7 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
         String s;
 
         // Asignación UI
-        s = items.getString(ConsultaAlquileres.NOMBRE);
+        s = items.getString(0);
         holder.carrera.setText(s);
 
 
@@ -105,12 +95,5 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
         return items;
     }
 
-    interface ConsultaAlquileres {
-        int ID_ALQUILER = 1;
-        int NOMBRE = 2;
-        int UBICACION = 3;
-        int DESCRIPCION = 4;
-        int PRECIO = 5;
-        int URL = 6;
-    }
+
 }

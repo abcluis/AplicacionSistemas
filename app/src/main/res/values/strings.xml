@@ -13,4 +13,5 @@
     <string name="titulo_lista_cursos_por_carrera">Lista de cursos</string>
     <string name="titulo_curso">Titulo Ilustrativo Curso</string>
     <string name="titulo_profesor">Nombre Profesor Ilustrativo</string>
+    <string name="title_activity_ejemplo">ejemplo</string>
 </resources>

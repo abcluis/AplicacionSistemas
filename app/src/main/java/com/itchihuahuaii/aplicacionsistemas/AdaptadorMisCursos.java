@@ -3,10 +3,13 @@ package com.itchihuahuaii.aplicacionsistemas;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.ViewHolder> {
     private final Context contexto;
@@ -22,22 +25,26 @@ public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.
         // Referencias UI
         public TextView curso;
         public TextView profesor;
+        ImageView icono_curso;
+
 
 
         public ViewHolder(View v) {
             super(v);
             curso = (TextView) v.findViewById(R.id.nombre_curso);
             profesor = (TextView) v.findViewById(R.id.nombre_profesor);
+            icono_curso =(ImageView)v.findViewById(R.id.nuevo_curso);
+            icono_curso.setVisibility(View.GONE);
             curso.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     items.moveToPosition(getAdapterPosition());
                     MainActivity ma= (MainActivity)contexto;
-                    ma.CURSO=items.getString(2);
-                    System.out.println("CURSO PRESIONADO ---------------------"+ma.CURSO);
-                    ma.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_principal,new FragmentCursoVista()).commit();
+                    ma.setCurso(Integer.parseInt(ma.datos.selectPlataformaDB("SELECT id FROM curso WHERE nombre='"+items.getString(0)+"'")));
+                    ma.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_principal,new FragmentCursoVista(),"curso").addToBackStack(null).commit();
                 }
             });
+
         }
 
     }

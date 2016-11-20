@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:background="@color/colorPrimary"
+    tools:context="com.itchihuahuaii.aplicacionsistemas.FragmentTareaVista">
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlanco"
+        android:layout_marginTop="50dp"
+        android:id="@+id/relativeLayout">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:background="#455a64"
+            android:textColor="#fff"
+            android:text="Enviar"
+            android:id="@+id/button"
+            android:layout_below="@+id/vista_tarea_nombre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="139dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Fecha de entrega: 2 de diciembre "
+            android:id="@+id/tarea_vista_fecha"
+            android:layout_marginTop="53dp"
+            android:layout_below="@+id/vista_tarea_nombre"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingLeft="16dp"
+            android:textAlignment="center"
+            android:text="nombre de la tarea"
+            android:layout_marginTop="87dp"
+            android:id="@+id/vista_tarea_nombre"
+            android:layout_alignParentTop="true" />
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/icon_tarea"
+        android:id="@+id/imageView2"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

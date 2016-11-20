@@ -28,16 +28,18 @@ public class FragmentCursoCarrera extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_curso_carrera,container,false);
         titulo=(TextView) view.findViewById(R.id.titulo_cursos_por_carrera);
-        Bundle bundle = getArguments();
-        Toast.makeText(getContext(), bundle.getString("dato"), Toast.LENGTH_SHORT).show();
-        String id = bundle.getString("dato");
+
         reciclador =(RecyclerView)view.findViewById(R.id.reciclador);
         linearLayoutManager = new LinearLayoutManager(getActivity());
+
         reciclador.setLayoutManager(linearLayoutManager);
         adaptador = new AdaptadorCursoCarrera(getContext());
         MainActivity ma = (MainActivity)getActivity();
-        Cursor cursor = ma.datos.obtenerCursosCarrera(id);
+        String carrera = ma.getCarrera();
+        Cursor cursor = ma.datos.selectPlataformaDBCursor("SELECT curso.nombre,profesor.nombre,curso.id FROM curso,profesor,carrera WHERE carrera.nombre='"+carrera+"' " +
+                "AND curso.id_profesor=profesor.id AND curso.id_carrera=carrera.id");
         adaptador.swapCursor(cursor);
+
         reciclador.setAdapter(adaptador);
         return view;
     }

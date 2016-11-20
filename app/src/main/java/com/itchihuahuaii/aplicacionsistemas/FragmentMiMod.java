@@ -33,7 +33,7 @@ public class FragmentMiMod extends Fragment {
         adaptadorMiMod = new AdaptadorMiMod(getContext());
         MainActivity ma = (MainActivity)getActivity();
 
-        adaptadorMiMod.swapCursor(ma.datos.obtenerCarrera());
+        adaptadorMiMod.swapCursor(ma.datos.selectPlataformaDBCursor("SELECT nombre FROM carrera"));
         reciclador.setAdapter(adaptadorMiMod);
         return view;
     }

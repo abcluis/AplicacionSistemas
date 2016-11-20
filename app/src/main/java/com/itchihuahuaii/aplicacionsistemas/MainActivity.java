@@ -1,10 +1,17 @@
 package com.itchihuahuaii.aplicacionsistemas;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -22,76 +29,67 @@ public class MainActivity extends AppCompatActivity {
 
     public OperacionesBaseDatos datos;
 
-    public String USER;
-    public String CURSO;
-    public String TAREA;
+    private String usuario,carrera,tarea,tipo;
+    private int id_alumno,id_profesor,curso;
 
+    public String getUsuario() {
+        return usuario;
+    }
 
-    public class PruebasActivity extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            String alumno1;
-            String alumno2;
-            String tarea1;
-            String curso1;
-            String profesor1;
-            String carreraISC;
-            try {
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
+    public String getCarrera() {
+        return carrera;
+    }
 
-                alumno1 = datos.insertarAlumno("Luis");
-                alumno2 = datos.insertarAlumno("David");
-                String alumno3 = datos.insertarAlumno("Angel");
-                String alumno4 = datos.insertarAlumno("Karely");
-                String alumno5 = datos.insertarAlumno("Rafael");
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
 
-                profesor1 = datos.insertarProfesor("Carlos Boney");
-                String profesor2 = datos.insertarProfesor("Chevere");
-                String profesor3 = datos.insertarProfesor("Nachito");
-                String profesor4 = datos.insertarProfesor("Martin Gonzalez");
+    public String getTarea() {
+        return tarea;
+    }
 
-                carreraISC = datos.insertarCarrera("Ingenieria Sistemas Computacionales");
-                String carreraIIF = datos.insertarCarrera("Ingenieria en Informatica");
+    public void setTarea(String tarea) {
+        this.tarea = tarea;
+    }
 
-                curso1 = datos.insertarCurso("Sistemas Operativos Moviles", carreraISC, profesor2);
-                String curso2 = datos.insertarCurso("Administracion de Servidores", carreraISC, profesor4);
-                String curso3 = datos.insertarCurso("Graficacion", carreraISC, profesor1);
-                String curso4 = datos.insertarCurso("Principios de Programacion", carreraISC, profesor1);
+    public String getTipo() {
+        return tipo;
+    }
 
-                String alumnoCurso1 = datos.insertarAlumnoCurso(alumno1, curso1);
-                String alumnoCurso2 = datos.insertarAlumnoCurso(alumno1, curso2);
-                String alumnoCurso3 = datos.insertarAlumnoCurso(alumno2, curso1);
-                String alumnoCurso4 = datos.insertarAlumnoCurso(alumno2, curso3);
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
-                tarea1 = datos.insertarTarea("Documentacion 1", curso1);
-                String tarea2 = datos.insertarTarea("Buenas practicas Servidores", curso2);
-                String tarea3 = datos.insertarTarea("Documentacion Wi fi", curso1);
-                String tarea4 = datos.insertarTarea("Elaboracion de un juego", curso3);
-                String tarea5 = datos.insertarTarea("Elaboracion de un mp3", curso4);
+    public int getId_alumno() {
+        return id_alumno;
+    }
 
-                USER = alumno2;
+    public void setId_alumno(int id_alumno) {
+        this.id_alumno = id_alumno;
+    }
 
-            } finally {
+    public int getId_profesor() {
+        return id_profesor;
+    }
 
-            }
-            Log.d("Detalles de pedido", "Detalles del curso");
-            DatabaseUtils.dumpCursor(datos.obtenerCursoDatos(curso1));
+    public void setId_profesor(int id_profesor) {
+        this.id_profesor = id_profesor;
+    }
 
-            return null;
-        }
+    public int getCurso() {
+        return curso;
+    }
+
+    public void setCurso(int curso) {
+        this.curso = curso;
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            Toast.makeText(getApplicationContext(), "Voy hacia atrás!!",
-                    Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
-    @Override
     protected void onDestroy() {
         datos.getDb().close();
         super.onDestroy();
@@ -99,12 +97,29 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
 
+    // Variables de la notificacion
+    NotificationManager nm;
+    Notification notif;
+    static String ns = Context.NOTIFICATION_SERVICE;
+
+    //Defino los iconos de la notificacion en la barra de notificacion
+    int icono_v = R.drawable.notification;
+    int icono_r = R.drawable.notification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         agregarToolbar();
         drawer = (DrawerLayout) findViewById(R.id.drawer);
+        usuario = getIntent().getExtras().getString("USUARIO");
+        tipo = getIntent().getExtras().getString("TIPO");
+        if(tipo.equals("ALUMNO")){
+            id_alumno=Integer.parseInt(getIntent().getExtras().getString("ID_ALUMNO"));
+        }else if(tipo.equals("PROFESOR")){
+            id_profesor=Integer.parseInt(getIntent().getExtras().getString("ID_PROFESOR"));
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         if (navigationView != null) {
@@ -112,10 +127,26 @@ public class MainActivity extends AppCompatActivity {
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
 
-        getApplicationContext().deleteDatabase("plataforma.db");
         datos = OperacionesBaseDatos.obtenerInstancia(getApplicationContext());
+        Cursor c;
+        if(getTipo().equals("ALUMNO")){
+            c=datos.selectPlataformaDBCursor("SELECT tarea.nombre, curso.nombre FROM tarea,curso,alumno_curso,alumno " +
+                    "WHERE tarea.id_curso=curso.id AND alumno_curso.id_curso=curso.id AND alumno_curso.id_alumno=alumno.id AND alumno.id="+getId_alumno());
+            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    getBaseContext())
+                    .setSmallIcon(R.drawable.notification)
+                    .setContentTitle("Tareas Pendientes")
+                    .setContentText("Tienes "+ c.getCount()+" tareas pendientes!!!")
+                    .setWhen(System.currentTimeMillis());
+            nManager.notify(12345, builder.build());
+        }else{
+            c =datos.selectPlataformaDBCursor("SELECT tarea.nombre, curso.nombre FROM tarea,curso,profesor WHERE " +
+                    "tarea.id_curso=curso.id AND curso.id_profesor=profesor.id AND profesor.id="+getId_profesor());
+        }
 
-        new PruebasActivity().execute();
+
+
     }
 
 
@@ -158,9 +189,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_inicio:
                 fragment = new FragmentoInicio();
-                Bundle bundle = new Bundle();
-                bundle.putString("user", USER);
-                fragment.setArguments(bundle);
                 break;
         }
         if (fragment != null) {

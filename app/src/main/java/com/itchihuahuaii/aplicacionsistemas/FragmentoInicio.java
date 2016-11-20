@@ -50,12 +50,15 @@ public class FragmentoInicio extends Fragment {
         appBarLayout.addView(tabLayout);
     }
     private void poblarViewPager(ViewPager viewPager) {
-        AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
+        AdaptadorSecciones adapter = new AdaptadorSecciones(getChildFragmentManager());
         Fragment mimod = new FragmentMiMod();
         mimod.setArguments(getArguments());
-        adapter.addFragment(new FragmentMiMod(), getString(R.string.titulo_tab_mimod));
-        adapter.addFragment(new FragmentMisTareas(), getString(R.string.titulo_tab_mistareas));
-        adapter.addFragment(new FragmentMisCursos(), getString(R.string.titulo_tab_miscursos));
+        MainActivity mainActivity = (MainActivity)getContext();
+
+            adapter.addFragment(new FragmentMiMod(), getString(R.string.titulo_tab_mimod));
+            adapter.addFragment(new FragmentMisTareas(), getString(R.string.titulo_tab_mistareas));
+            adapter.addFragment(new FragmentMisCursos(), getString(R.string.titulo_tab_miscursos));
+
         viewPager.setAdapter(adapter);
     }
     public void onDestroyView() {
@@ -67,13 +70,25 @@ public class FragmentoInicio extends Fragment {
         private final List<Fragment> fragmentos = new ArrayList<>();
         private final List<String> titulosFragmentos = new ArrayList<>();
 
+        public FragmentManager fm;
+
         public AdaptadorSecciones(FragmentManager fm) {
             super(fm);
         }
 
         @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
         public android.support.v4.app.Fragment getItem(int position) {
             return fragmentos.get(position);
+        }
+
+        @Override
+        public void startUpdate(ViewGroup container) {
+            super.startUpdate(container);
         }
 
         @Override

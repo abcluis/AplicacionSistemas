@@ -18,25 +18,7 @@ public class BaseDatosPlataforma extends SQLiteOpenHelper {
 
     private final Context context;
 
-    interface TABLAS {
-        String ALUMNO = "alumno";
-        String CARRERA = "carrera";
-        String CURSO = "curso";
-        String ALUMNO_CURSO = "alumno_curso";
-        String TAREA = "tarea";
-        String PROFESOR = "profesor";
-    }
 
-    interface Referencias {
-        String ID_ALUMNO = String.format("REFERENCES %s(%s) ON DELETE CASCADE",
-                TABLAS.ALUMNO, ContratoPlataforma.Alumno.ID);
-        String ID_CURSO = String.format("REFERENCES %s(%s)",
-                TABLAS.CURSO, ContratoPlataforma.Curso.ID);
-        String ID_PROFESOR = String.format("REFERENCES %s(%s)",
-                TABLAS.PROFESOR, ContratoPlataforma.Profesor.ID);
-        String ID_CARRERA = String.format("REFERENCES %s(%s)",
-                TABLAS.CARRERA, ContratoPlataforma.Carrera.ID);
-    }
 
     public BaseDatosPlataforma(Context context) {
         super(context, NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
@@ -57,81 +39,36 @@ public class BaseDatosPlataforma extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //TABLA PROFESOR
-        db.execSQL(String.format("CREATE TABLE %s" +
-                        "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL)",
-                TABLAS.PROFESOR,
-                BaseColumns._ID,
-                ContratoPlataforma.Profesor.ID,
-                ContratoPlataforma.Profesor.NOMBRE));
+        //TABLA USUARIO
+        db.execSQL("CREATE TABLE usuario(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nick TEXT UNIQUE NOT NULL, password TEXT NOT NULL, tipo TEXT NOT NULL)");
 
-        // TABLA ALUMNO
-        db.execSQL(String.format("CREATE TABLE %s" +
-                        "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL)",
-                TABLAS.ALUMNO,
-                BaseColumns._ID,
-                ContratoPlataforma.Alumno.ID,
-                ContratoPlataforma.Alumno.NOMBRE));
+        db.execSQL("CREATE TABLE carrera(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT UNIQUE NOT NULL)");
 
-        // TABLA ALUMNO-CURSO
-        db.execSQL(String.format("CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL %s," +
-                        "%s TEXT NOT NULL %s)",
-                TABLAS.ALUMNO_CURSO,
-                BaseColumns._ID,
-                ContratoPlataforma.AlumnoCurso.ID,
-                ContratoPlataforma.AlumnoCurso.ID_ALUMNO, Referencias.ID_ALUMNO,
-                ContratoPlataforma.AlumnoCurso.ID_CURSO, Referencias.ID_CURSO));
+        db.execSQL("CREATE TABLE alumno(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT NOT NULL, id_usuario INTEGER UNIQUE NOT NULL REFERENCES usuario(id))");
 
-        // TABLA CURSO
-        db.execSQL(String.format("CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL %s," +
-                        "%s TEXT NOT NULL %s)",
-                TABLAS.CURSO, BaseColumns._ID, ContratoPlataforma.Curso.ID,
-                ContratoPlataforma.Curso.NOMBRE,
-                ContratoPlataforma.Curso.ID_CARRERA, Referencias.ID_CARRERA,
-                ContratoPlataforma.Curso.ID_PROFESOR, Referencias.ID_PROFESOR));
+        db.execSQL("CREATE TABLE profesor(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT NOT NULL, id_usuario INTEGER UNIQUE NOT NULL REFERENCES usuario(id))");
 
-        // TABLA CARRERA
-        db.execSQL(String.format("CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL)",
-                TABLAS.CARRERA,
-                BaseColumns._ID,
-                ContratoPlataforma.Carrera.ID,
-                ContratoPlataforma.Carrera.NOMBRE));
+        db.execSQL("CREATE TABLE alumno_curso(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "id_alumno INTEGER NOT NULL REFERENCES alumno(id), id_curso INTEGER NOT NULL REFERENCES curso(id))");
 
-        // TABLA TAREA
-        db.execSQL(String.format("CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT UNIQUE NOT NULL," +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL %s)",
-                TABLAS.TAREA,
-                BaseColumns._ID,
-                ContratoPlataforma.Tarea.ID,
-                ContratoPlataforma.Tarea.NOMBRE,
-                ContratoPlataforma.Tarea.ID_CURSO,Referencias.ID_CURSO));
+        db.execSQL("CREATE TABLE curso(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT NOT NULL, id_carrera INTEGER NOT NULL REFERENCES carrera(id)," +
+                "id_profesor INTEGER NOT NULL REFERENCES profesor(id))");
+
+        db.execSQL("CREATE TABLE tarea(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT UNIQUE NOT NULL, id_curso INTEGER NOT NULL REFERENCES curso(id), fecha TEXT NOT NULL)");
+
+
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.CARRERA);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.CURSO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.ALUMNO_CURSO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.TAREA);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.ALUMNO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLAS.PROFESOR);
     }
+
+
 }
