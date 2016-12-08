@@ -14,14 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by usuario1 on 11/4/2016.
+ * Adaptador para el Fragment Mi Mod
+ * @author Equipo Plataforma Mod
+ * @version v0.7
  */
 public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHolder> {
     private final Context contexto;
     private Cursor items;
 
     private OnItemClickListener escucha;
-
+    /**
+     * Interfaz para el evento onClick
+     */
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
@@ -30,8 +34,10 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
             {
         // Referencias UI
         public TextView carrera;
-
-
+                /**
+                 * Constructor donde se instancian los objetos del adaptador
+                 * @param v Parametro tipo View
+                 */
         public ViewHolder(View v) {
             super(v);
             carrera = (TextView) v.findViewById(R.id.titulo_carrera_mi_mod);
@@ -49,7 +55,10 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
 
     }
 
-
+    /**
+     * Constructor
+     * @param contexto contexto de la aplicacion
+     */
 
     public AdaptadorMiMod(Context contexto) {
         this.contexto = contexto;
@@ -83,7 +92,10 @@ public class AdaptadorMiMod extends RecyclerView.Adapter<AdaptadorMiMod.ViewHold
             return items.getCount();
         return 0;
     }
-
+    /**
+     * Metodo que recibe el cursor para cargar los datos
+     * @param nuevoCursor Cursor de SQL
+     */
     public void swapCursor(Cursor nuevoCursor) {
         if (nuevoCursor != null) {
             items = nuevoCursor;

@@ -12,7 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
+/**
+ * Fragment que tiene los cursos del usuario actual
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentMisCursos extends Fragment {
     RecyclerView reciclador;
     LinearLayoutManager linearLayoutManager;
@@ -20,7 +24,13 @@ public class FragmentMisCursos extends Fragment {
 
     public FragmentMisCursos() {
     }
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

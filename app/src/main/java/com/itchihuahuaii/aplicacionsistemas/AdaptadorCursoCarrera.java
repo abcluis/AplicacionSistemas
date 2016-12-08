@@ -18,23 +18,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by usuario1 on 11/4/2016.
+ * Adaptador para el Fragment Curso Carrera
+ * @author Equipo Plataforma Mod
+ * @version v0.7
  */
 public class AdaptadorCursoCarrera extends RecyclerView.Adapter<AdaptadorCursoCarrera.ViewHolder> {
     private final Context contexto;
     private Cursor items;
 
-
+    /**
+     * Interfaz para el evento onClick
+     */
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
 
+    /**
+     * Clase View Holder
+     */
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         // Referencias UI
         public TextView nombre_profesor;
         public TextView nombre_curso;
         ImageView nuevo_curso;
+
+        /**
+         * Constructor donde se instancian los objetos del adaptador
+         * @param v Parametro tipo View
+         */
 
         public ViewHolder(View v) {
             super(v);
@@ -71,7 +83,10 @@ public class AdaptadorCursoCarrera extends RecyclerView.Adapter<AdaptadorCursoCa
     }
 
 
-
+    /**
+     * Constructor
+     * @param contexto contexto de la aplicacion
+     */
     public AdaptadorCursoCarrera(Context contexto) {
         this.contexto = contexto;
 
@@ -126,6 +141,10 @@ public class AdaptadorCursoCarrera extends RecyclerView.Adapter<AdaptadorCursoCa
         return 0;
     }
 
+    /**
+     * Metodo que recibe el cursor para cargar los datos
+     * @param nuevoCursor Cursor de SQL
+     */
     public void swapCursor(Cursor nuevoCursor) {
         if (nuevoCursor != null) {
             items = nuevoCursor;
@@ -137,7 +156,5 @@ public class AdaptadorCursoCarrera extends RecyclerView.Adapter<AdaptadorCursoCa
         return items;
     }
 
-    interface columnas {
 
-    }
 }

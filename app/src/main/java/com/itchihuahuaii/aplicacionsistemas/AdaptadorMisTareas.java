@@ -7,24 +7,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+/**
+ * Adaptador para el Fragment Mis Tareas
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class AdaptadorMisTareas extends RecyclerView.Adapter<AdaptadorMisTareas.ViewHolder> {
     private final Context contexto;
     private Cursor items;
 
     private OnItemClickListener escucha;
-
+    /**
+     * Interfaz para el evento onClick
+     */
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
-
+    /**
+     * Clase View Holder
+     */
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         // Referencias UI
         public TextView curso;
         public TextView tarea;
 
-
+        /**
+         * Constructor donde se instancian los objetos del adaptador
+         * @param v Parametro tipo View
+         */
         public ViewHolder(View v) {
             super(v);
             curso = (TextView) v.findViewById(R.id.titulo_curso_mis_tareas);
@@ -42,7 +53,10 @@ public class AdaptadorMisTareas extends RecyclerView.Adapter<AdaptadorMisTareas.
 
     }
 
-
+    /**
+     * Constructor
+     * @param contexto contexto de la aplicacion
+     */
     public AdaptadorMisTareas(Context contexto) {
         this.contexto = contexto;
 
@@ -79,7 +93,10 @@ public class AdaptadorMisTareas extends RecyclerView.Adapter<AdaptadorMisTareas.
             return items.getCount();
         return 0;
     }
-
+    /**
+     * Metodo que recibe el cursor para cargar los datos
+     * @param nuevoCursor Cursor de SQL
+     */
     public void swapCursor(Cursor nuevoCursor) {
         if (nuevoCursor != null) {
             items = nuevoCursor;

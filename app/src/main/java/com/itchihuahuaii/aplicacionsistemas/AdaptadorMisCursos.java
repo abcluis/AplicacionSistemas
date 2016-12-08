@@ -10,13 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * Adaptador para el Fragment Mis Cursos
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.ViewHolder> {
     private final Context contexto;
     private Cursor items;
 
     private OnItemClickListener escucha;
-
+    /**
+     * Interfaz para el evento onClick
+     */
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
@@ -27,7 +33,10 @@ public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.
         public TextView profesor;
         ImageView icono_curso;
 
-
+        /**
+         * Constructor donde se instancian los objetos del adaptador
+         * @param v Parametro tipo View
+         */
 
         public ViewHolder(View v) {
             super(v);
@@ -49,7 +58,10 @@ public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.
 
     }
 
-
+    /**
+     * Constructor
+     * @param contexto contexto de la aplicacion
+     */
     public AdaptadorMisCursos(Context contexto) {
         this.contexto = contexto;
 
@@ -85,7 +97,10 @@ public class AdaptadorMisCursos extends RecyclerView.Adapter<AdaptadorMisCursos.
             return items.getCount();
         return 0;
     }
-
+    /**
+     * Metodo que recibe el cursor para cargar los datos
+     * @param nuevoCursor Cursor de SQL
+     */
     public void swapCursor(Cursor nuevoCursor) {
         if (nuevoCursor != null) {
             items = nuevoCursor;

@@ -7,7 +7,9 @@ import android.os.Build;
 import android.provider.BaseColumns;
 
 /**
- * Created by usuario1 on 11/3/2016.
+ * Base de datos de la aplicacion
+ * @author Equipo Plataforma Mod
+ * @version v0.7
  */
 
 public class BaseDatosPlataforma extends SQLiteOpenHelper {
@@ -19,12 +21,19 @@ public class BaseDatosPlataforma extends SQLiteOpenHelper {
     private final Context context;
 
 
-
+    /**
+     * Constructor
+     * @param context contexto de la aplicacion
+     */
     public BaseDatosPlataforma(Context context) {
         super(context, NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
         this.context = context;
     }
 
+    /**
+     * Metodo al abrir la DB
+     * @param db Database
+     */
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -37,6 +46,10 @@ public class BaseDatosPlataforma extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Metodo de creacion de la base de datos aqui se crean todas las tablas
+     * @param db Database
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         //TABLA USUARIO

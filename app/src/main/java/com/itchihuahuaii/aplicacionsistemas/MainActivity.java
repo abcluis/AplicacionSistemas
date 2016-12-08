@@ -27,13 +27,19 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.itchihuahuaii.aplicacionsistemas.sqlite.OperacionesBaseDatos;
-
+/**
+ * Actividad Principal donde se controlan todos los fragment
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class MainActivity extends AppCompatActivity {
 
     public OperacionesBaseDatos datos;
 
     private String usuario,carrera,tarea,tipo;
     private int id_alumno,id_profesor,curso;
+
+
 
     public String getUsuario() {
         return usuario;

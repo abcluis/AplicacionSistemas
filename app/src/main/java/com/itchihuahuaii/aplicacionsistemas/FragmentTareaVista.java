@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
+/**
+ * Fragment que muestra las vista de tarea
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentTareaVista extends Fragment {
 
     public FragmentTareaVista() {
@@ -20,7 +24,13 @@ public class FragmentTareaVista extends Fragment {
 
     TextView tarea;
     TextView fecha;
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

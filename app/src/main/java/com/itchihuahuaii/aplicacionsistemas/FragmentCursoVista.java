@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+/**
+ * Fragment que muestra el vista del curso
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentCursoVista extends Fragment {
     RecyclerView reciclador;
     LinearLayoutManager linearLayoutManager;
@@ -24,7 +28,13 @@ public class FragmentCursoVista extends Fragment {
     public FragmentCursoVista() {
 
     }
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -15,7 +15,11 @@ import com.itchihuahuaii.aplicacionsistemas.sqlite.OperacionesBaseDatos;
 
 import java.util.Calendar;
 import java.util.Date;
-
+/**
+ * Activitad de inicio de sesion de la aplicacion
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class Login extends AppCompatActivity {
 
     public OperacionesBaseDatos datos;
@@ -48,6 +52,7 @@ public class Login extends AppCompatActivity {
             datos.insertCurso("Programacion en Moviles",1,1);
             datos.insertCurso("JavaScript Basico",1,2);
             datos.insertCurso("JavaScript Avanzado",1,2);
+            datos.insertCurso("JavaScript Avanzado 2",1,2);
 
             datos.insertTarea("Tarea 1: Hola mundo",1,fecha);
             datos.insertTarea("Tarea 2: Variables",1,fecha);

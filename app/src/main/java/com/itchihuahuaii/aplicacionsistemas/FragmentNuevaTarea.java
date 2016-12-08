@@ -15,7 +15,11 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
+/**
+ * Fragment para crear una nueva tarea
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentNuevaTarea extends Fragment {
 
 
@@ -26,7 +30,13 @@ public class FragmentNuevaTarea extends Fragment {
     Button btn_tarea;
     EditText edt_tarea;
     DatePicker fecha;
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

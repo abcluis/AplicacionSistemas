@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.itchihuahuaii.aplicacionsistemas.sqlite.BaseDatosPlataforma;
-
+/**
+ * Fragment que muestra las carreras
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentMiMod extends Fragment {
     RecyclerView reciclador;
     LinearLayoutManager linearLayoutManager;
@@ -21,7 +25,13 @@ public class FragmentMiMod extends Fragment {
 
     public FragmentMiMod() {
     }
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -8,8 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
+/**
+ * Fragment que contiene las tareas del usuario
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentMisTareas extends Fragment {
 
     RecyclerView reciclador;
@@ -18,6 +21,14 @@ public class FragmentMisTareas extends Fragment {
 
     public FragmentMisTareas() {
     }
+
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

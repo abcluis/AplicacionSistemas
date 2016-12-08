@@ -19,7 +19,11 @@ import com.itchihuahuaii.aplicacionsistemas.sqlite.OperacionesBaseDatos;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Fragment que contiene las tab de la aplicacion
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentoInicio extends Fragment {
 
     private AppBarLayout appBarLayout;
@@ -27,7 +31,13 @@ public class FragmentoInicio extends Fragment {
     private ViewPager viewPager;
     public FragmentoInicio(){}
 
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +52,10 @@ public class FragmentoInicio extends Fragment {
 
         return view;
     }
+    /**
+     * Metodo donde se insertar las pestañas al fragment
+     * @param container
+     */
     private void insertarTabs(ViewGroup container) {
         View padre=(View)container.getParent();
         appBarLayout =(AppBarLayout)padre.findViewById(R.id.appBar);
@@ -49,6 +63,10 @@ public class FragmentoInicio extends Fragment {
         tabLayout.setTabTextColors(Color.parseColor("#FFFFFF"),Color.parseColor("#FFFFFF"));
         appBarLayout.addView(tabLayout);
     }
+    /**
+     * Metodo donde se asignan los fragment que tendran las comidas
+     * @param viewPager ViewPager declarado en el layout
+     */
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getChildFragmentManager());
         Fragment mimod = new FragmentMiMod();
@@ -65,13 +83,18 @@ public class FragmentoInicio extends Fragment {
         super.onDestroyView();
         appBarLayout.removeView(tabLayout);
     }
-
+    /**
+     * Clase donde se añaden las pestañas
+     */
     public class AdaptadorSecciones extends FragmentStatePagerAdapter {
         private final List<Fragment> fragmentos = new ArrayList<>();
         private final List<String> titulosFragmentos = new ArrayList<>();
 
         public FragmentManager fm;
-
+        /**
+         * Constructor
+         * @param fm FragmentManager para hacer las transiciones
+         */
         public AdaptadorSecciones(FragmentManager fm) {
             super(fm);
         }

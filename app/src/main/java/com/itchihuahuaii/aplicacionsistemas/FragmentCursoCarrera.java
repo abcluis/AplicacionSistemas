@@ -12,7 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * Fragment que muestra los cursos ordenados por carrera
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class FragmentCursoCarrera extends Fragment {
 
     RecyclerView reciclador;
@@ -22,7 +26,13 @@ public class FragmentCursoCarrera extends Fragment {
 
     public FragmentCursoCarrera() {
     }
-
+    /**
+     * Metodo con la vista del fragment
+     * @param inflater Inflater
+     * @param container contenedor
+     * @param savedInstanceState instancia
+     * @return Devuelve la vista del fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

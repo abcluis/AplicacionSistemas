@@ -10,14 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * Adaptador para el Fragment Curso Vista
+ * @author Equipo Plataforma Mod
+ * @version v0.7
+ */
 public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVista.ViewHolder> {
     private final Context contexto;
     private Cursor items;
     public boolean ajeno=false;
 
     private OnItemClickListener escucha;
-
+    /**
+     * Interfaz para el evento onClick
+     */
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
@@ -27,7 +33,10 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
         // Referencias UI
         public TextView tarea;
         public ImageView delete;
-
+        /**
+         * Constructor donde se instancian los objetos del adaptador
+         * @param v Parametro tipo View
+         */
 
         public ViewHolder(View v) {
             super(v);
@@ -70,7 +79,10 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
 
     }
 
-
+    /**
+     * Constructor
+     * @param contexto contexto de la aplicacion
+     */
     public AdaptadorCursoVista(Context contexto) {
         this.contexto = contexto;
     }
@@ -109,7 +121,10 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
             return items.getCount();
         return 0;
     }
-
+    /**
+     * Metodo que recibe el cursor para cargar los datos
+     * @param nuevoCursor Cursor de SQL
+     */
     public void swapCursor(Cursor nuevoCursor) {
         if (nuevoCursor != null) {
             items = nuevoCursor;
