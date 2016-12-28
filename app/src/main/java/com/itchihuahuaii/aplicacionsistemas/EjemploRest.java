@@ -2,14 +2,25 @@ package com.itchihuahuaii.aplicacionsistemas;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,25 +33,64 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EjemploRest extends AppCompatActivity {
 
     private EditText nick,password,nombre,id;
     private Button btnDB;
+    JSONArray jsonArray;
     public static final int CONNECTION_TIMEOUT=10000;
     public static final int READ_TIMEOUT=30000;
+
+    ListView list;
+    Button nuevo;
+    ArrayList<HashMap<String, String>> nombres;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejemplo_rest);
-        nick = (EditText)findViewById(R.id.nick);
-        password = (EditText)findViewById(R.id.password);
         btnDB = (Button)findViewById(R.id.boton1);
+        list = (ListView)findViewById(R.id.list);
+        nuevo = (Button)findViewById(R.id.nuevo);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e("CLick",adapterView.getAdapter().getItem(i).toString());
+                HashMap<String,String> map = (HashMap<String,String>)adapterView.getAdapter().getItem(i);
+                list.setVisibility(View.GONE);
+                try{
 
+                for(int k=0;k<jsonArray.length();k++){
+                    JSONObject jsonPost = jsonArray.getJSONObject(k);
+                    if(jsonPost.getString("id").equals(map.get("id"))){
+                        Toast.makeText(EjemploRest.this, "La informacion de array es\n"+jsonPost.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }
+                }catch(JSONException e){}
+                JSONObject obj=new JSONObject(map);
+                Log.e("JSON",""+obj);
+                Fragment aux = new FragmentEdit();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("map",map);
+                aux.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.activity_ejemplo_rest,aux).addToBackStack("JSON").commit();
+
+            }
+        });
+        nuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment aux = new FragmentEdit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.activity_ejemplo_rest,aux).addToBackStack("JSON").commit();
+            }
+        });
         btnDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AsyncLogin().execute(nick.getText().toString(),password.getText().toString());
+                list.setVisibility(View.VISIBLE);
+                new AsyncLogin().execute();
             }
         });
         /*nombre = (EditText)findViewById(R.id.nombre);
@@ -66,107 +116,81 @@ public class EjemploRest extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
 
-                // Enter URL address where your php file resides
-                url = new URL("http://localhost/login.inc.php");
+                HttpURLConnection urlConnection = null;
 
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return "exception";
-            }
-            try {
-                // Setup HttpURLConnection class to send and receive data from php and mysql
-                conn = (HttpURLConnection)url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("POST");
+                nombres = new ArrayList<>();
 
-                // setDoInput and setDoOutput method depict handling of both send and receive
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
+                try {
 
-                // Append parameters to URL
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("nick", params[0])
-                        .appendQueryParameter("password", params[1]);
-                String query = builder.build().getEncodedQuery();
+                    URL url = new URL("http://192.168.0.30:8081/lola/user/getAll");
+                    urlConnection = (HttpURLConnection) url.openConnection();
 
-                // Open connection for sending data
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
+                    urlConnection.setRequestMethod("GET");
 
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                return "exception";
-            }
+                    int reponse = urlConnection.getResponseCode();
 
-            try {
+                    if (reponse == HttpURLConnection.HTTP_OK) {
 
-                int response_code = conn.getResponseCode();
+                        BufferedReader inStream = new BufferedReader(
+                                new InputStreamReader(urlConnection.getInputStream()));
 
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
+                        String inputLine = "";
 
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
+                        StringBuffer buffer = new StringBuffer();
 
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
+                        while ( (inputLine = inStream.readLine()) != null) {
+                            buffer.append(inputLine);
+                        }
+                        inStream.close();
+
+                        Log.i("Areglo", buffer.toString());
+
+                        jsonArray = new JSONArray(buffer.toString());
+
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonPost = jsonArray.getJSONObject(i);
+                            Log.e("JSON",jsonPost.toString());
+                            HashMap<String, String> temporal = new HashMap<>();
+                            temporal.put("id", jsonPost.getString("id"));
+                            temporal.put("firstName", jsonPost.getString("firstName"));
+                            temporal.put("lastName", jsonPost.getString("lastName"));
+                            temporal.put("password", jsonPost.getString("password"));
+                            temporal.put("reference", jsonPost.getString("reference"));
+                            nombres.add(temporal);
+                        }
+                        Log.e("TODO","TODO HA SALIDO BIEN");
+                    } else {
+                        return null;
                     }
 
-                    // Pass data to onPostExecute method
-                    return(result.toString());
-
-                }else{
-
-                    return("unsuccessful");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    urlConnection.disconnect();
                 }
 
-            } catch (IOException e) {
+                // Enter URL address where your php file resides
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return "exception";
-            } finally {
-                conn.disconnect();
             }
-
+            return null;
 
         }
 
         @Override
         protected void onPostExecute(String result) {
 
-            //this method will be running on UI thread
-
             pdLoading.dismiss();
 
-            if(result.equalsIgnoreCase("true"))
-            {
-                /* Here launching another activity when login successful. If you persist login state
-                use sharedPreferences of Android. and logout button to clear sharedPreferences.
-                 */
+            ListAdapter adapter = new SimpleAdapter(getApplicationContext(), nombres,
+                    R.layout.list_item_json, new String[]{"firstName","lastName","password","reference"},
+                    new int[]{R.id.nombre,R.id.apellido,R.id.password,R.id.referencia});
 
-                Toast.makeText(EjemploRest.this, "Ejemplo realizado con exito", Toast.LENGTH_SHORT).show();
+            list.setAdapter(adapter);
 
-            }else if (result.equalsIgnoreCase("false")){
-
-                // If username and password does not match display a error message
-                Toast.makeText(EjemploRest.this, "Invalid email or password", Toast.LENGTH_LONG).show();
-
-            } else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
-
-                Toast.makeText(EjemploRest.this, "OOPs! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
-
-            }
         }
 
     }

@@ -35,6 +35,7 @@ public class FragmentCursoVista extends Fragment {
      * @param savedInstanceState instancia
      * @return Devuelve la vista del fragment
      */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

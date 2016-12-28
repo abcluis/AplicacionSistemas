@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.itchihuahuaii.aplicacionsistemas.FragmentEdit">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:text="Nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:id="@+id/edt_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="nombre"/>
+    <TextView
+        android:text="Apellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edt_apellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Apellido"/>
+
+    <TextView
+        android:text="Reference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edt_reference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="reference"/>
+    <TextView
+        android:text="Password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="password"/>
+    <Button
+        android:id="@+id/guardar"
+        android:text="Guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

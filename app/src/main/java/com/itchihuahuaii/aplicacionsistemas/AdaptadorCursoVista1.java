@@ -1,8 +1,12 @@
 package com.itchihuahuaii.aplicacionsistemas;
 
 import android.content.Context;
+
+import android.content.Context;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +19,7 @@ import android.widget.Toast;
  * @author Equipo Plataforma Mod
  * @version v0.7
  */
-public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVista.ViewHolder> {
+public class AdaptadorCursoVista1 extends RecyclerView.Adapter<AdaptadorCursoVista1.ViewHolder> {
     private final Context contexto;
     private Cursor items;
     public boolean ajeno=false;
@@ -27,11 +31,16 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
     interface OnItemClickListener {
         public void onClick(ViewHolder holder, String idAlquiler);
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         // Referencias UI
         public TextView tarea;
         public ImageView delete;
+
+        RecyclerView reciclador;
+        LinearLayoutManager linearLayoutManager;
+        AdaptadorCursoVista adaptador;
         /**
          * Constructor donde se instancian los objetos del adaptador
          * @param v Parametro tipo View
@@ -40,7 +49,7 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
         public ViewHolder(View v) {
             super(v);
             tarea = (TextView) v.findViewById(R.id.titulo_curso_vista);
-            tarea.setOnClickListener(new View.OnClickListener() {
+            /*tarea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     items.moveToPosition(getAdapterPosition());
@@ -49,28 +58,27 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
                     mainActivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.contenedor_principal,new FragmentTareaVista()).commit();
                 }
             });
-            delete =(ImageView)v.findViewById(R.id.delete_tarea);
-            MainActivity mainActivity = (MainActivity)contexto;
+
+
             if(mainActivity.getTipo().equals("ALUMNO")|| ajeno){
                 delete.setVisibility(View.GONE);
-            }
+            }*/
+            final MainActivity mainActivity = (MainActivity)contexto;
+            delete =(ImageView)v.findViewById(R.id.topico);
+            reciclador =(RecyclerView)v.findViewById(R.id.reciclador);
 
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     items.moveToPosition(getAdapterPosition());
-                    MainActivity mainActivity = (MainActivity)contexto;
-                    if(mainActivity.datos.deleteData(mainActivity.datos.selectPlataformaDB("SELECT id FROM tarea WHERE nombre='"+items.getString(0)+"'"))){
-                        Toast.makeText(mainActivity, "Se ha eliminado el registro", Toast.LENGTH_SHORT).show();
-                        Fragment aux = mainActivity.getSupportFragmentManager().findFragmentByTag("curso");
-                        mainActivity.getSupportFragmentManager().beginTransaction().detach(aux).attach(aux).commit();
+                    Cursor c = mainActivity.datos.selectPlataformaDBCursor("SELECT tarea.nombre FROM tarea,curso WHERE tarea.id_curso=curso.id" +
+                            " AND curso.id=" + mainActivity.getCurso());
 
-                    }else {
-                        Toast.makeText(mainActivity, "algo fallo", Toast.LENGTH_SHORT).show();
-
-
-                    }
-
+                    linearLayoutManager = new LinearLayoutManager(mainActivity);
+                    reciclador.setLayoutManager(linearLayoutManager);
+                    adaptador = new AdaptadorCursoVista(mainActivity);
+                    adaptador.swapCursor(c);
+                    reciclador.setAdapter(adaptador);
 
                 }
             });
@@ -82,7 +90,7 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
      * Constructor
      * @param contexto contexto de la aplicacion
      */
-    public AdaptadorCursoVista(Context contexto) {
+    public AdaptadorCursoVista1(Context contexto) {
         this.contexto = contexto;
     }
 
@@ -93,7 +101,7 @@ public class AdaptadorCursoVista extends RecyclerView.Adapter<AdaptadorCursoVist
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_lista_curso_vista, parent, false);
+                .inflate(R.layout.item_lista_curso_vista1, parent, false);
         return new ViewHolder(v);
     }
 
