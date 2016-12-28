@@ -57,23 +57,29 @@ public class EjemploRest extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e("CLick",adapterView.getAdapter().getItem(i).toString());
+
+
+
                 HashMap<String,String> map = (HashMap<String,String>)adapterView.getAdapter().getItem(i);
                 list.setVisibility(View.GONE);
+                JSONObject temp = new JSONObject();
                 try{
 
-                for(int k=0;k<jsonArray.length();k++){
-                    JSONObject jsonPost = jsonArray.getJSONObject(k);
+                    for(int k=0;k<jsonArray.length();k++){
+                        JSONObject jsonPost = jsonArray.getJSONObject(k);
                     if(jsonPost.getString("id").equals(map.get("id"))){
-                        Toast.makeText(EjemploRest.this, "La informacion de array es\n"+jsonPost.toString(), Toast.LENGTH_LONG).show();
+                        temp = jsonPost;
                     }
                 }
-                }catch(JSONException e){}
-                JSONObject obj=new JSONObject(map);
-                Log.e("JSON",""+obj);
+                }catch(JSONException e){
+                    temp=null;
+                }
+
                 Fragment aux = new FragmentEdit();
                 Bundle bundle = new Bundle();
+                bundle.putString("JSON",temp.toString());
                 bundle.putSerializable("map",map);
+                bundle.putInt("tipo",2);
                 aux.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_ejemplo_rest,aux).addToBackStack("JSON").commit();
 
@@ -83,6 +89,9 @@ public class EjemploRest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Fragment aux = new FragmentEdit();
+                Bundle bundle = new Bundle();
+                bundle.putInt("tipo",1);
+                aux.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_ejemplo_rest,aux).addToBackStack("JSON").commit();
             }
         });
@@ -150,14 +159,16 @@ public class EjemploRest extends AppCompatActivity {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonPost = jsonArray.getJSONObject(i);
-                            Log.e("JSON",jsonPost.toString());
-                            HashMap<String, String> temporal = new HashMap<>();
-                            temporal.put("id", jsonPost.getString("id"));
-                            temporal.put("firstName", jsonPost.getString("firstName"));
-                            temporal.put("lastName", jsonPost.getString("lastName"));
-                            temporal.put("password", jsonPost.getString("password"));
-                            temporal.put("reference", jsonPost.getString("reference"));
-                            nombres.add(temporal);
+                            if(jsonPost.getString("enable").equals("1")){
+                                HashMap<String, String> temporal = new HashMap<>();
+                                temporal.put("id", jsonPost.getString("id"));
+                                temporal.put("firstName", jsonPost.getString("firstName"));
+                                temporal.put("lastName", jsonPost.getString("lastName"));
+                                temporal.put("password", jsonPost.getString("password"));
+                                temporal.put("reference", jsonPost.getString("reference"));
+                                nombres.add(temporal);
+                            }
+
                         }
                         Log.e("TODO","TODO HA SALIDO BIEN");
                     } else {

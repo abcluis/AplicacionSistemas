@@ -48,6 +48,8 @@ public class FragmentEdit extends Fragment {
     HashMap<String,String> map;
     EditText edt_nombre,edt_apellido,edt_password,edt_reference;
     Button guardar;
+    int tipo;
+    JSONObject json;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,18 +66,35 @@ public class FragmentEdit extends Fragment {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AsyncLogin(map).execute();
+                if(tipo==1){
+                    new AsyncLogin(map).execute();
+                }else {
+                    try {
+                        json.put("firstName", edt_nombre.getText().toString());
+                        json.put("lastName", edt_apellido.getText().toString());
+                        json.put("password", edt_password.getText().toString());
+                        json.put("reference", edt_reference.getText().toString());
+                    }catch(JSONException e){}
+
+                    new AsyncLogin(json).execute();
+                }
+
             }
         });
-
+        if(getArguments().getInt("tipo")==1){
+            tipo=1;
+        }else {
+            tipo=2;
+        }
        try{
             map = (HashMap<String,String>)getArguments().getSerializable("map");
-            edt_nombre.setText(map.get("firstName"));
-            edt_apellido.setText(map.get("lastName"));
-            edt_password.setText(map.get("password"));
-            edt_reference.setText(map.get("reference"));
+            json = new JSONObject(getArguments().getString("JSON"));
+            edt_nombre.setText(json.getString("firstName"));
+            edt_apellido.setText(json.getString("lastName"));
+            edt_password.setText(json.getString("password"));
+            edt_reference.setText(json.getString("reference"));
        }
-        catch(NullPointerException e){
+        catch(Exception e){
             map=  new HashMap<>();
             map.put("enable","1");
             map.put("firstName","Miguel");
@@ -94,10 +113,16 @@ public class FragmentEdit extends Fragment {
 
         JSONObject mapa;
 
+        AsyncLogin(JSONObject json){
+            mapa=json;
+        }
+
         AsyncLogin(HashMap<String,String> map){
             mapa=new JSONObject(map);
             try{
+
                 mapa.put("id",12);
+
                 mapa.put("type","ADMIN");
                 JSONArray aux = new JSONArray();
                 JSONObject obj = new JSONObject();
@@ -113,9 +138,6 @@ public class FragmentEdit extends Fragment {
             }catch (JSONException e){
 
             }
-
-            Log.e("MAPA",mapa+"");
-            Log.e("MAPA2",mapa.toString());
         }
 
         @Override
@@ -133,12 +155,21 @@ public class FragmentEdit extends Fragment {
             URL url;
             String response = "";
             try {
-                url = new URL("http://192.168.0.30:8081/lola/user/add");
+                if(tipo==1){
+                    url = new URL("http://192.168.0.30:8081/lola/user/add");
+                }else {
+                    url = new URL("http://192.168.0.30:8081/lola/user/update");
+                }
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(15000);
                 conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
+                if(tipo==1){
+                    conn.setRequestMethod("POST");
+                }else if(tipo==2){
+                    conn.setRequestMethod("PUT");
+                }
+
 
                 conn.setRequestProperty("Content-Type","application/json");
 
